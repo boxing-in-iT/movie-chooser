@@ -4,6 +4,8 @@ import { useMovieTrailer } from "../../../hooks/useMovieTrailer";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { setRandomMovie } from "../../../redux/features/moviesSlice";
+import { Genre } from "../../../data/interfaces";
+import { getCountOfPages } from "../../../utility/getCountOfPages";
 
 const RandomMovieButton = styled.button`
   padding: 10px 20px;
@@ -34,12 +36,10 @@ const RandomMovieHandler = ({
   }, [randomMovie]);
 
   const handleFetch = async () => {
-    const movie = await fetchRandomMovie(selectedGenres);
-    console.log("movie", movie);
+    const pagesCount = await getCountOfPages(selectedGenres);
+    const movie = await fetchRandomMovie(pagesCount, selectedGenres);
     if (movie) {
-      // await fetchTrailer(movie.id);
       onModalToggle();
-      console.log("movie", movie);
     }
   };
 

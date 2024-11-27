@@ -7,9 +7,9 @@ export const useRandomMovie = () => {
   const [trigger, { isFetching, error }] = useLazyGetRandomMovieQuery();
   const [randomMovie, setRandomMovie] = useState<Movie | null>(null);
 
-  const fetchRandomMovie = async (genres?: Genre[]) => {
+  const fetchRandomMovie = async (page: number, genres?: Genre[]) => {
     try {
-      const response = await trigger({ genres }).unwrap();
+      const response = await trigger({ genres, page }).unwrap();
 
       // Проверка наличия результатов
       if (!response.results || response.results.length === 0) {

@@ -16,9 +16,9 @@ export const movieApi = createApi({
   }),
   endpoints: (builder) => ({
     getRandomMovie: builder.query({
-      query: ({ genres }: { genres?: Genre[] }) => {
-        const randomPage = Math.floor(Math.random() * 100) + 1; // Случайная страница
-        console.log("randomPage", randomPage);
+      query: ({ genres, page }: { genres?: Genre[]; page: number }) => {
+        const randomPage = Math.floor(Math.random() * page) + 1;
+
         const genreQuery =
           Array.isArray(genres) && genres.length > 0
             ? `&with_genres=${genres.map((genre) => genre.id).join(",")}`
