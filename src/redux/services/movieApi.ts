@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { Genre } from "../../data/interfaces";
 
 export const movieApi = createApi({
   reducerPath: "movieApi",
@@ -15,11 +16,17 @@ export const movieApi = createApi({
   }),
   endpoints: (builder) => ({
     getRandomMovie: builder.query({
-      query: () => {
+      query: ({ genres }: { genres?: Genre[] }) => {
         const randomPage = Math.floor(Math.random() * 100) + 1; // Случайная страница
-        return `discover/movie?include_adult=true&include_video=false&vote_average.gte=7&vote_count.gte=500&include_video=true&language=ru-US&page=${randomPage}&sort_by=popularity.desc`;
+        console.log("randomPage", randomPage);
+        const genreQuery =
+          Array.isArray(genres) && genres.length > 0
+            ? `&with_genres=${genres.map((genre) => genre.id).join(",")}`
+            : "";
+        return `discover/movie?include_adult=true&include_video=false&vote_average.gte=7&vote_count.gte=500&language=ru-US&page=${randomPage}&sort_by=popularity.desc${genreQuery}`;
       },
     }),
+
     getMovieTrailersById: builder.query({
       query: (ids) => `movie/${ids}/videos?language=ru-US`,
     }),

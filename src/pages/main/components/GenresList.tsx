@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import { MOVIE_GENRES } from "../../../data/data";
 import styled from "styled-components";
+import { useDispatch } from "react-redux";
+import { toggleGenre } from "../../../redux/features/moviesSlice";
+import { Genre } from "../../../data/interfaces";
 
 const GenresListWrapper = styled.ul`
   display: flex;
@@ -31,10 +34,16 @@ const GenresListItem = styled.li`
 
 const GenresList = () => {
   const [genres] = useState(MOVIE_GENRES);
+  const dispatch = useDispatch();
+
+  const handleGenreClick = (genre: Genre) => {
+    dispatch(toggleGenre(genre));
+  };
+
   return (
     <GenresListWrapper>
       {genres.map((genre) => (
-        <GenresListItem key={genre.id}>
+        <GenresListItem key={genre.id} onClick={() => handleGenreClick(genre)}>
           <p>{genre.name}</p>
         </GenresListItem>
       ))}
